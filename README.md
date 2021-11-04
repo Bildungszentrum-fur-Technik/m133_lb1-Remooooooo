@@ -1,7 +1,7 @@
 # LB1 / M133
 
-* Autor: _XY_
-* Klasse: _XY_
+* Autor: Remo Stark 
+* Klasse: IN 19-23 b
 
 ## Kurzbeschreibung Projekt
 
