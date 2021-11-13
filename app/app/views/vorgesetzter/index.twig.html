@@ -10,20 +10,22 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">id</th>
-            <th scope="col">datum</th>
-            <th scope="col">reiseziel</th>
-            <th scope="col">essenskosten</th>
-            <th scope="col">fahrtkosten</th>
-            <th scope="col">kmanzahl</th>
-            <th scope="col">uebernachtung</th>
-            <th scope="col">verkehrsmittel</th>
-            <th scope="col">unterschrift</th>
+            <!-- TableHead -->
+            <th scope="col">ID</th>
+            <th scope="col">Datum</th>
+            <th scope="col">Reiseziel</th>
+            <th scope="col">Essenskosten</th>
+            <th scope="col">Fahrtkosten</th>
+            <th scope="col">KMAnzahl</th>
+            <th scope="col">Uebernachtung</th>
+            <th scope="col">Verkehrsmittel</th>
+            <th scope="col">Unterschrift</th>
+            <th scope="col">Unterschreiben</th>
         </tr>
     </thead>
 
     <tbody>
-
+        <!-- TableData -->
         {% for datarow in data %}
         <tr>
             <th scope="row">{{ datarow.id }}</th>
@@ -35,8 +37,8 @@
             <td>{{ datarow.uebernachtung }}</td>
             <td>{{ datarow.verkehrsmittel }}</td>
             <td>{{ datarow.unterschrift }}</td>
-
-            </td>
+            <!-- Link zu einzelnem Formular zum untershreiben -->
+            <td><a href="VorgesetzterController/unterschreiben/{{ datarow.id }}">Unterschreiben</a></td>
         </tr>
         {% endfor %}
 

@@ -1,19 +1,24 @@
 {% extends "base/layout.twig.html" %}
 
 {% block content %}
-
-<form method="post">
+<!--Formularfeld Personalnummer 
+    Required true
+    6 Stellig -->
+<form method="post" enctype="multipart/form-data">
   <div class="form-group">
-    <label for="input requiredPersonalnummer">Personalnummer</label>
+    <label for="personalnummer">Personalnummer</label>
     {% if data.personalnummer_err is empty %}
-    <input required type="text" class="form-control" placeholder="0000" value="{{data.personalnummer}}" name="personalnummer">
+    <input min="100000" max="999999" required type="text" class="form-control" placeholder="0000"
+      value="{{data.personalnummer}}" name="personalnummer">
     {% else %}
-    <input required type="text" value="{{data.personalnummer}}" class="form-control form-control-lg is-invalid" name="personalnummer">
+    <input min="100000" max="999999" required type="text" value="{{data.personalnummer}}"
+      class="form-control form-control-lg is-invalid" name="personalnummer">
     <span class="invalid-feedback"> {{ data.personalnummer_err }}</span>
     {% endif %}
   </div>
 
-
+  <!--Formularfeld Datum
+    Required true-->
   <div class="form-group">
     <label for="InputDate">Datum</label>
     {% if data.datum_err is empty %}
@@ -24,33 +29,42 @@
     {% endif %}
   </div>
 
-
+  <!--Formularfeld Reiseziel
+    Required true-->
   <div class="form-group">
-    <label for="input requiredReiseziel">Reiseziel</label>
+    <label for="Reiseziel">Reiseziel</label>
     {% if data.reiseziel_err is empty %}
-    <input required type="text" class="form-control" value="{{data.reiseziel}}"  name="reiseziel" placeholder="Jowa Volketswil">
+    <input required type="text" class="form-control" value="{{data.reiseziel}}" name="reiseziel"
+      placeholder="Jowa Volketswil">
     {% else %}
-    <input required type="text" value="{{data.reiseziel}}" name="reiseziel" class="form-control form-control-lg is-invalid">
+    <input required type="text" value="{{data.reiseziel}}" name="reiseziel"
+      class="form-control form-control-lg is-invalid">
     <span class="invalid-feedback"> {{ data.reiseziel_err }}</span>
     {% endif %}
   </div>
 
 
+  <!--Formularfeld Essenskosten
+    Required false-->
   <div class="form-group">
-    <label for="input requiredEssenskosten">Essenskosten</label>
+    <label for="Essenskosten">Essenskosten</label>
     {% if data.essenskosten_err is empty %}
-    <input  min="0" max="50" type="number" value="{{data.essenskosten}}" class="form-control" placeholder="20.00" name="essenskosten">
+    <input min="0" max="50" type="number" value="{{data.essenskosten}}" class="form-control" placeholder="20.00"
+      name="essenskosten">
     {% else %}
-    <input  min="0" max="50" type="number" value="{{data.essenskosten}}" class="form-control form-control-lg is-invalid" name="essenskosten">
+    <input min="0" max="50" type="number" value="{{data.essenskosten}}" class="form-control form-control-lg is-invalid"
+      name="essenskosten">
     <span class="invalid-feedback"> {{ data.essenskosten_err }}</span>
     {% endif %}
   </div>
 
 
+  <!--Dropdown Verkehrsmittel
+    Auswahl: Zug/ Auto-->
   <div class="form-group">
-    <label for="input requiredVerkehrsmittel">Verkehrsmittel</label>
+    <label for="Verkehrsmittel">Verkehrsmittel</label>
     {% if data.verkehrsmittel_err is empty %}
-    <select onchange="verkehrChange()" id="selectVerkehr"  class="form-control" name="verkehrsmittel">
+    <select onchange="verkehrChange()" id="selectVerkehr" class="form-control" name="verkehrsmittel">
       {% if data.verkehrsmittel == 'Auto' %}
       <option value="Zug">Zug</option>
       <option selected value="Auto">Auto</option>
@@ -60,7 +74,7 @@
       {% endif %}
     </select>
     {% else %}
-    <select onchange="verkehrChange()" id="selectVerkehr"  class="form-control is-invalid" name="verkehrsmittel">
+    <select onchange="verkehrChange()" id="selectVerkehr" class="form-control is-invalid" name="verkehrsmittel">
       {% if data.verkehrsmittel == 'Auto' %}
       <option value="Zug">Zug</option>
       <option selected value="Auto">Auto</option>
@@ -74,28 +88,51 @@
   </div>
 
 
+  <!--Formularfeld Fahrtkosten
+    Required true wenn Zug ausgewählt-->
   <div class="form-group" id="kostenZug">
-    <label for="input requiredFahrtkosten">Fahrtkosten</label>
+    <label for="Fahrtkosten">Fahrtkosten</label>
     {% if data.fahrtkosten_err is empty %}
-    <input id="zugInput" type="number" value="{{data.fahrtkosten}}" class="form-control" placeholder="20.00" name="fahrtkosten">
+    <input id="zugInput" type="number" value="{{data.fahrtkosten}}" class="form-control" placeholder="20.00"
+      name="fahrtkosten">
     {% else %}
-    <input  id="zugInput"  type="number" value="{{data.fahrtkosten}}" class="form-control form-control-lg is-invalid"  name="fahrtkosten">
+    <input id="zugInput" type="number" value="{{data.fahrtkosten}}" class="form-control form-control-lg is-invalid"
+      name="fahrtkosten">
     <span class="invalid-feedback"> {{ data.fahrtkosten_err }}</span>
     {% endif %}
   </div>
 
 
-  <div class="form-group" id="kmAuto" >
-    <label for="input requiredKmanzahl">Kilometer Anzahl</label>
+  <!--Formularfeld KM Auto
+    Required true wenn Auto ausgewhält-->
+  <div class="form-group" id="kmAuto">
+    <label for="Kmanzahl">Kilometer Anzahl</label>
     {% if data.kmanzahl_err is empty %}
-    <input  id="autoInput"   type="number" value="{{data.kmanzahl}}" class="form-control" placeholder="20" name="kmanzahl">
+    <input id="autoInput" type="number" value="{{data.kmanzahl}}" class="form-control" placeholder="20" name="kmanzahl">
     {% else %}
-    <input id="autoInput"  type="number" value="{{data.kmanzahl}}" class="form-control form-control-lg is-invalid" name="kmanzahl">
+    <input id="autoInput" type="number" value="{{data.kmanzahl}}" class="form-control form-control-lg is-invalid"
+      name="kmanzahl">
     <span class="invalid-feedback"> {{ data.kmanzahl_err }}</span>
     {% endif %}
   </div>
 
-  <input  type="submit" value="Spesenformular abschicken" class="btn btn-success btn-block form-control">
+
+  <!--Formularfeld Quittungen
+    Required false-->
+  <div class="form-group">
+    <label for="File">Quittungen</label>
+    {% if data.quittungen_err is empty %}
+    <input type="file" class="form-control-file" name="quittungen">
+    {% else %}
+    <input input type="file" class="form-control form-control-lg is-invalid" name="quittungen">
+    <span class="invalid-feedback"> {{ data.quittungen_err }}</span>
+    {% endif %}
+  </div>
+
+
+  <!--Submitbutton-->
+  <input type="submit" value="Spesenformular abschicken" class="btn btn-success btn-block form-control">
 </form>
+
 
 {% endblock %}

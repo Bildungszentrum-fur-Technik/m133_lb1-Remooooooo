@@ -6,11 +6,7 @@ class SpesenController extends Controller
     {
         // Instanzierung Model
         $SpesenModel = $this->model('SpesenModel');
-
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-           
-
 
             // Daten trimmen (Leerzeichen entfernen usw.) und Sanitizen (überprüfen auf gültigkeit)
             $personalnummer = trim(
@@ -55,11 +51,15 @@ class SpesenController extends Controller
                 'uebernachtung_err' => '',    // Feldermeldung für Attribute
                 'verkehrsmittel' => $verkehrsmittel,    // Form-Feld-Daten
                 'verkehrsmittel_err' => '',    // Feldermeldung für Attribute
+                'quittungen' => '',    // Form-Feld-Daten
+
             ];
 
-            //
+            // Daten validieren
             if (empty($data['personalnummer'])) {
                 $data['personalnummer_err'] = 'Bitte Personalnummer angeben';
+            } elseif ($data['personalnummer'] < 100000 or $data['personalnummer'] > 999999) {
+                $data['personalnummer_err'] = 'Personalnummer ungültig';
             }
 
             if (empty($data['datum'])) {
@@ -69,11 +69,9 @@ class SpesenController extends Controller
             if (empty($data['reiseziel'])) {
                 $data['reiseziel_err'] = 'Bitte Reiseziel auswählen';
             }
-            if(empty($data['essenskosten'])) {
+            if (empty($data['essenskosten'])) {
                 $data['essenskosten_err'] = 'Bitte Essenskosten angeben';
-            }
-            else if($data['essenskosten'] < 0 OR $data['essenskosten'] > 50 )
-            {
+            } else if ($data['essenskosten'] < 0 or $data['essenskosten'] > 50) {
                 $data['essenskosten_err'] = 'Essenskosten müssen zwischen 0 und 50 Franken sein';
             }
 
@@ -94,9 +92,21 @@ class SpesenController extends Controller
                 $data['verkehrsmittel_err'] = 'Bitte Verkehrsmittel auswählen';
             }
 
+            //Dateiupload der Quittung
+            $uploaddir = '../data/';
+            $uploadfile = $uploaddir . basename($_FILES['quittungen']['name']);
+
+            if (!empty($_FILES['quittungen'])) {
+                if (move_uploaded_file($_FILES['quittungen']['tmp_name'], $uploadfile)) {
+                    $data['quittungen'] = $uploadfile;
+                }
+            }
+
             // Keine Errors vorhanden
-            if (empty($data['personalnummer_err']) && empty($data['datum_err']) && empty($data['reiseziel_err'])
-            && empty($data['essenskosten_err'])&& empty($data['verkehrsmittel_err'])&& empty($data['fahrtkosten_err'])&& empty($data['fahrtkosten_err'])&& empty($data['kmanzahl_err'])) {
+            if (
+                empty($data['personalnummer_err']) && empty($data['datum_err']) && empty($data['reiseziel_err'])
+                && empty($data['essenskosten_err']) && empty($data['verkehrsmittel_err']) && empty($data['fahrtkosten_err']) && empty($data['fahrtkosten_err']) && empty($data['kmanzahl_err'])
+            ) {
                 // Alles gut, keine Fehler vorhanden
                 // Späteres TODO: Auf DB schreiben
 
@@ -110,8 +120,8 @@ class SpesenController extends Controller
 
             //
         } else {
-            // Init Form mit Default-Daten, weil Get-Aufruf
 
+            // Init Form mit Default-Daten, weil Get-Aufruf
             $data = [
                 'personalnummer' => '',          // Form-Feld-Daten
                 'personalnummer_err' => '',      // Feldermeldung für Attribute
