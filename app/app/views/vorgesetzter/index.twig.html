@@ -1,0 +1,46 @@
+{% extends "base/layout.twig.html" %}
+
+{% block content %}
+
+<!-- Wir überschreiben den Content-Block -->
+<h1 class="mt-5">Aktuelle Spesenformulare: </h1>
+
+<!-- {{ dump(data) }} -->
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">datum</th>
+            <th scope="col">reiseziel</th>
+            <th scope="col">essenskosten</th>
+            <th scope="col">fahrtkosten</th>
+            <th scope="col">kmanzahl</th>
+            <th scope="col">uebernachtung</th>
+            <th scope="col">verkehrsmittel</th>
+            <th scope="col">unterschrift</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for datarow in data %}
+        <tr>
+            <th scope="row">{{ datarow.id }}</th>
+            <td>{{ datarow.datum }}</td>
+            <td>{{ datarow.reiseziel }}</td>
+            <td>{{ datarow.essenskosten }}</td>
+            <td>{{ datarow.fahrtkosten }}</td>
+            <td>{{ datarow.kmanzahl }}</td>
+            <td>{{ datarow.uebernachtung }}</td>
+            <td>{{ datarow.verkehrsmittel }}</td>
+            <td>{{ datarow.unterschrift }}</td>
+
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}
