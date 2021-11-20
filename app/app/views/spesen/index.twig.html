@@ -8,10 +8,10 @@
   <div class="form-group">
     <label for="personalnummer">Personalnummer</label>
     {% if data.personalnummer_err is empty %}
-    <input  required type="text" class="form-control" placeholder="100000"
-      value="{{data.personalnummer}}" pattern="\d{6}" name="personalnummer">
+    <input required type="text" class="form-control" placeholder="100000" value="{{data.personalnummer}}"
+      pattern="\d{6}" name="personalnummer">
     {% else %}
-    <input  required type="text"  pattern="\d{6}" value="{{data.personalnummer}}"
+    <input required type="text" pattern="\d{6}" value="{{data.personalnummer}}"
       class="form-control form-control-lg is-invalid" name="personalnummer">
     <span class="invalid-feedback"> {{ data.personalnummer_err }}</span>
     {% endif %}
@@ -132,7 +132,7 @@
 
   <!--Submitbutton-->
   <input type="submit" value="Spesenformular abschicken" class="btn btn-success btn-block form-control">
-     <!-- <span class="popuptext" id="successPopup">Popup text...</span> --> 
+  <!-- <span class="popuptext" id="successPopup">Popup text...</span> -->
 </form>
 
 

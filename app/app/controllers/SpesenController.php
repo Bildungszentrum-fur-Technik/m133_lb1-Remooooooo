@@ -68,7 +68,7 @@ class SpesenController extends Controller
             // Daten validieren
             if (empty($data['personalnummer'])) {
                 $data['personalnummer_err'] = 'Bitte Personalnummer angeben';
-            } elseif (preg_match($pattern,$data['personalnummer']) == 0) {
+            } elseif (preg_match($pattern, $data['personalnummer']) == 0) {
                 $data['personalnummer_err'] = 'Personalnummer ungültig';
             }
 

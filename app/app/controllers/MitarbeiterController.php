@@ -16,5 +16,4 @@ class MitarbeiterController extends Controller
         // View wird gerendert
         echo $this->twig->render('mitarbeiter/index.twig.html', ['title' => 'Spesen', 'urlroot' => URLROOT, 'data' => $data]);
     }
-
 }
