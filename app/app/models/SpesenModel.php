@@ -3,8 +3,17 @@
 /**
  * Definition der SpesenModel Attribute
  * 
- * id -> ID des Spesenformular, wird referenziert werden von den Formularen
- * .....
+ * id                   Auto Increment         ID des Spesenformular, wird referenziert werden von den Formularen
+ * Personalnummer       int                    6 Stellig
+ * Datum                String                 Datum Formatierung
+ * Reiseziel            String                 Ort der Reise
+ * Essenskosten         int                    max. 50 CHF
+ * Fahrtkosten          int                    Zugticketkosten
+ * km anzahl            int                    km Anzahl mit Auto
+ * uebernachtung        int                    Kosten Uebernachtung
+ * Verkehrsmittel       String                 Dropdown mit Values Zug und Auto
+ * Unterschrift         boolean                Genehmigen oder Ablehenen
+ * Quittungen           file                   Upload für Quittungen
  */
 class SpesenModel extends BaseModel
 {

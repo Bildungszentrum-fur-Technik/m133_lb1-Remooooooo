@@ -2,6 +2,13 @@
 
 class SpesenController extends Controller
 {
+    /**
+     * Index funktion, welche die Funktionaloitäten des Controllers beinhaltet.
+     *
+     * @param -
+     *
+     * @return void
+     */
     public function index()
     {
         // Instanzierung Model

@@ -1,4 +1,3 @@
-
 function verkehrChange() {
     // Holen das HTML Element
 
