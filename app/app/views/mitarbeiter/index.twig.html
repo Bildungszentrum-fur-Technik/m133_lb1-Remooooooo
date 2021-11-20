@@ -1,0 +1,46 @@
+{% extends "base/layout.twig.html" %}
+
+{% block content %}
+
+<!-- View der Ansicht von einem Mitarbeiter ausgefüllten Formular
+//Wurde nicht in den Vorgaben definiert, wurde noch zuzätzlich hinzugefügt -->
+<h1 class="mt-5">Meine Spesenformulare: </h1>
+
+<!-- {{ dump(data) }} -->
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <!-- TableHead -->
+            <th scope="col">ID</th>
+            <th scope="col">Datum</th>
+            <th scope="col">Reiseziel</th>
+            <th scope="col">Essenskosten</th>
+            <th scope="col">Fahrtkosten</th>
+            <th scope="col">KMAnzahl</th>
+            <th scope="col">Uebernachtung</th>
+            <th scope="col">Verkehrsmittel</th>
+            <th scope="col">Unterschrift</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- TableData -->
+        {% for datarow in data %}
+        <tr>
+            <th scope="row">{{ datarow.id }}</th>
+            <td>{{ datarow.datum }}</td>
+            <td>{{ datarow.reiseziel }}</td>
+            <td>{{ datarow.essenskosten }}</td>
+            <td>{{ datarow.fahrtkosten }}</td>
+            <td>{{ datarow.kmanzahl }}</td>
+            <td>{{ datarow.uebernachtung }}</td>
+            <td>{{ datarow.verkehrsmittel }}</td>
+            <td>{{ datarow.unterschrift }}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %}

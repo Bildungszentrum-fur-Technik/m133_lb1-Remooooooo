@@ -4,7 +4,7 @@
  * Definition der SpesenModel Attribute
  * 
  * id                   Auto Increment         ID des Spesenformular, wird referenziert werden von den Formularen
- * Personalnummer       int                    6 Stellig
+ * Personalnummer       String                 6 Stellig (Nur Zahlen von 0-9)
  * Datum                String                 Datum Formatierung
  * Reiseziel            String                 Ort der Reise
  * Essenskosten         int                    max. 50 CHF

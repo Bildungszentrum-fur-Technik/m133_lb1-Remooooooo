@@ -16,8 +16,9 @@ class SpesenController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Daten trimmen (Leerzeichen entfernen usw.) und Sanitizen (überprüfen auf gültigkeit)
+            // Personalnummer ist nun ein String und kein INT, da auch führende Nullen möglich sind
             $personalnummer = trim(
-                filter_input(INPUT_POST, 'personalnummer', FILTER_SANITIZE_NUMBER_INT)
+                filter_input(INPUT_POST, 'personalnummer', FILTER_SANITIZE_STRING)
             );
             $datum = trim(
                 filter_input(INPUT_POST, 'datum', FILTER_SANITIZE_STRING)
@@ -61,11 +62,13 @@ class SpesenController extends Controller
                 'quittungen' => '',    // Form-Feld-Daten
 
             ];
+            // Überprüft das Pattern der Personalnummer, ob 6x eine Zahl von 0-9 vorkommt
+            $pattern = "/[0-9]{6}/";
 
             // Daten validieren
             if (empty($data['personalnummer'])) {
                 $data['personalnummer_err'] = 'Bitte Personalnummer angeben';
-            } elseif ($data['personalnummer'] < 100000 or $data['personalnummer'] > 999999) {
+            } elseif (preg_match($pattern,$data['personalnummer']) == 0) {
                 $data['personalnummer_err'] = 'Personalnummer ungültig';
             }
 
