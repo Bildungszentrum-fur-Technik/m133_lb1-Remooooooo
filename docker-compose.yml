@@ -18,11 +18,12 @@ services:
     image: mysql:8
     ports:
       - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: user 
-      MYSQL_PASSWORD: userpass
-      MYSQL_DATABASE: testdb 
+      MYSQL_USER: SpesenUser 
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: SpesenDB 
     volumes:
       - ./mysql/initscripts:/docker-entrypoint-initdb.d
       - ./mysql/mysqldata:/var/lib/mysql/
