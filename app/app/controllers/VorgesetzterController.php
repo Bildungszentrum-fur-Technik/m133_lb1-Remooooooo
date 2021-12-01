@@ -1,19 +1,23 @@
 <?php
-//C
+
+/**
+ * Controller für das Vorgesetzten Formular
+ */
 class VorgesetzterController extends Controller
 {
 
-    public function index()
+    // Übergabeparameter wird für die Rückmeldung beim Absenden genutzt
+    public function index($information = '')
     {
         // Instanzierung des Model
         $SpesenModel  = $this->model('SpesenModel');
 
-        // Fake Data laden
-        // Validierung der Berechtigung im nächsten Schritt
-        $data = $SpesenModel->getFakeSpesenDataArray();
+        // Daten Laden , zeigt alle Spesen an
+        // Berechtigungsvalidierung ist noch ausstehend
+        $data = $SpesenModel->getSpesenAlle();
 
         // View wird gerendert
-        echo $this->twig->render('vorgesetzter/index.twig.html', ['title' => 'Spesen', 'urlroot' => URLROOT, 'data' => $data]);
+        echo $this->twig->render('vorgesetzter/index.twig.html', ['title' => 'Spesen', 'urlroot' => URLROOT, 'data' => $data, 'information' => $information]);
     }
 
     public function unterschreiben($id)
@@ -23,14 +27,30 @@ class VorgesetzterController extends Controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // überprüft ob die Variable "submit" Gehnemigen oder Ablehnen ist
             if ($_POST['submit'] == 'Genehmigen') {
-                $SpesenModel->fakeGenehmigeSpese($id);
+                $result = $SpesenModel->genehmigenSpesen($id);
             } else if ($_POST['submit'] == 'Ablehnen') {
-                $SpesenModel->fakeAblehnenSpese($id);
+                $result = $SpesenModel->ablehnenSpesen($id);
             }
+            if($result){
+                $this->index('Formular erfolgreich bearbeitet.');
+            }else {
+                $this->index('Formular konnte nicht bearbeitet werden.');
+            }
+
         } else {
-            $data = $SpesenModel->getFakeSpesen($id);
+            
+            // Funktion gibt Daten des ausgewählten Formulars aus
+            $data = $SpesenModel->getSpesenById($id);
+            
+            // Überprüft ob das Formular existiert, falls ja wird es gerendert
+            if(count($data) > 0){
+                echo $this->twig->render('vorgesetzter/unterschreiben.twig.html', ['title' => 'Spesen', 'urlroot' => URLROOT, 'data' => $data[0]]);
+            }
+            else {
+                $this->index('Spesenformular nicht gefunden');
+            }
             // rendert View
-            echo $this->twig->render('vorgesetzter/unterschreiben.twig.html', ['title' => 'Spesen', 'urlroot' => URLROOT, 'data' => $data]);
+           
         }
     }
 }

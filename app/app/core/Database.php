@@ -1,6 +1,9 @@
 <?php
 
 /**
+ * Übernommen von C.Inauen und als gut befunden
+ * Keine Änderungen vorgenommen
+ *
  * PDO Datenbankklasse
  * 
  * - Connect to Datebase

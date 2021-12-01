@@ -1,10 +1,8 @@
 <?php
-
-
 /**
-* Base-Model 
-*/
-
+ * Übernommen von C.Inauen und als gut befunden
+ * Keine Änderungen vorgenommen
+ */
 class BaseModel {
     protected $db;
 

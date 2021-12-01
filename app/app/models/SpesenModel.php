@@ -30,54 +30,84 @@ class SpesenModel extends BaseModel
     private $quittungen;
 
     /**
-     * TestMethode die nur Fake-Daten liefert
-     *
-     * @return $data : Array aus Fake-Menues
+     * Funktion des Vorgesetzten, welche alle Daten ausgibt
      */
-    public function getFakeSpesenDataArray()
+    public function getSpesenAlle()
     {
-        $data = [
-            [
-                'id' => '1', 'personalnummer' => '0001', 'datum' => '2021-11-13', 'reiseziel' => 'Jowa Gossau', 'essenskosten' => '20.50', 'fahrtkosten' => '40.50', 'kmanzahl' => '40',
-                'uebernachtung' => '30.20', 'verkehrsmittel' => 'Zug', 'unterschrift' => true
-            ],
+        $this->db->query("SELECT * FROM SpesenFormular");
 
-            [
-                'id' => '2', 'personalnummer' => '0002', 'datum' => '2021-11-14', 'reiseziel' => 'Jowa Volketswil', 'essenskosten' => '30.50', 'fahrtkosten' => '25.00', 'kmanzahl' => '50',
-                'uebernachtung' => '40.20', 'verkehrsmittel' => 'Auto', 'unterschrift' => false
-            ],
+        $results = $this->db->resultSet();
 
-            [
-                'id' => '3', 'personalnummer' => '0003', 'datum' => '2021-11-15', 'reiseziel' => 'Jowa Gränichen', 'essenskosten' => '15.50', 'fahrtkosten' => '60.50', 'kmanzahl' => '60',
-                'uebernachtung' => '0.00', 'verkehrsmittel' => 'Auto', 'unterschrift' => false
-            ]
-        ];
-
-        return $data;
+        return $results;
     }
 
-    // Holt Daten einem Formular, wenn der Vorgesetzte unterschreiben will
-    public function getFakeSpesen($id)
+    /**
+     * Überprüft die User ID sucht alle Formulare von diesem User auf der DB und returnt diese
+     * User ID wurde nachträglich hinzugefügt, da es vorkommen kann, dass jemand anderes für einen User ein Formular ausfüllt
+     */
+    public function getSpesenUser($userId)
     {
-        $data =
-            ['id' => $id, 'personalnummer' => '0001', 'datum' => '2021-11-13', 'reiseziel' => 'Jowa Gossau', 'essenskosten' => '20.50', 'fahrtkosten' => '40.50', 'kmanzahl' => '40', 'uebernachtung' => '30.20', 'verkehrsmittel' => 'Zug', 'unterschrift' => true, 'quittungen' => '/data/README.md'];
+        $this->db->query("SELECT * FROM SpesenFormular WHERE UserID = :userid");
+        $this->db->bind(':userid', $userId);
+        $results = $this->db->resultSet();
 
-        return $data;
+        return $results;
     }
 
-    // Formular abschicken
-    public function fakewriteData($data)
+    /**
+     * Ruft Daten des Ausgewählten Formulars auf, um es zu Unterschreiben
+     */
+    public function getSpesenById($id)
     {
-        die(var_dump($data));
+        $this->db->query("SELECT * FROM SpesenFormular WHERE ID = :id");
+        $this->db->bind(':id', $id);
+        $results = $this->db->resultSet();
+
+        return $results;
     }
-    // Formular genehmigen
-    public function fakeGenehmigeSpese($id)
+
+    // Funktion zum Spesenformular abschicken
+    public function addSpesen($data, $userId)
     {
-        die(var_dump($id));
+
+        $this->db->query("INSERT INTO SpesenFormular ( `Personalnummer`, `UserId`, `Datum`, `Reiseziel`, `Essenskosten`, `Fahrtkosten`, `KM_Anzahl`, `Uebernachtung`, `Verkehrsmittel`) VALUES(
+            :personalnummer , :userid ,:datum ,:reiseziel ,:essenskosten ,:fahrtkosten ,:km_anzahl ,:uebernachtung ,:verkehrsmittel )");
+        $this->db->bind(':personalnummer', $data['personalnummer']);
+        $this->db->bind(':userid', $userId);
+        $this->db->bind(':datum', $data['datum']);
+        $this->db->bind(':reiseziel',  $data['reiseziel']);
+        $this->db->bind(':essenskosten',  $data['essenskosten']);
+        $this->db->bind(':fahrtkosten',  $data['fahrtkosten']);
+        $this->db->bind(':km_anzahl',  $data['kmanzahl']);
+        $this->db->bind(':uebernachtung',  $data['uebernachtung']);
+        $this->db->bind(':verkehrsmittel',  $data['verkehrsmittel']);
+        return $this->db->execute();
     }
-    // Formular ablehnen
-    public function fakeAblehnenSpese($id)
+
+    // Spesenformular genehmigen
+    // Setzt die Unterschrift auf true
+    public function genehmigenSpesen($id)
     {
-        die(var_dump($id));
+        $this->db->query("UPDATE SpesenFormular SET Unterschrift = 1 WHERE ID = :id");
+        $this->db->bind(':id', $id);
+        return $this->db->execute();
+    }
+
+    // Spesenformular ablehnen
+    // Falls ein Spesenformular abgelehnt wird, wird es gelöscht.
+    public function ablehnenSpesen($id)
+    {
+        $spese = $this->getSpesenById($id);
+        if (
+            count($spese) > 0 // Überprüft ob Formular existiert
+            &&
+            // Falls das Formular bereits genehmigt wurde, return false, damit ein genehmigtes Formular nicht gelöscht werden kann
+            !$spese[0]['Unterschrift']
+        ) {
+            $this->db->query("DELETE FROM SpesenFormular WHERE ID = :id");
+            $this->db->bind(':id', $id);
+            return $this->db->execute();
+        }
+        return false;
     }
 }

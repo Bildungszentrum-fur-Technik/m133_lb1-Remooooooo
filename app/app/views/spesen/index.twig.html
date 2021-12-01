@@ -1,6 +1,11 @@
 {% extends "base/layout.twig.html" %}
 
 {% block content %}
+
+<div>
+  <!-- Fehlermeldung falls ein Fehler beim erstellen geschieht-->
+  {{ erstellen_err }}
+</div>
 <!--Formularfeld Personalnummer 
     Required true
     6 Stellig -->
@@ -55,6 +60,19 @@
     <input min="0" max="50" type="number" value="{{data.essenskosten}}" class="form-control form-control-lg is-invalid"
       name="essenskosten">
     <span class="invalid-feedback"> {{ data.essenskosten_err }}</span>
+    {% endif %}
+  </div>
+
+  <!--Formularfeld Essenskosten
+    Required false-->
+  <div class="form-group">
+    <label for="Uebernachtung">Uebernachtung</label>
+    {% if data.uebernachtung_err is empty %}
+    <input type="number" value="{{data.uebernachtung}}" class="form-control" placeholder="30.00" name="uebernachtung">
+    {% else %}
+    <input type="number" value="{{data.uebernachtung}}" class="form-control form-control-lg is-invalid"
+      name="uebernachtung">
+    <span class="invalid-feedback"> {{ data.uebernachtung_err }}</span>
     {% endif %}
   </div>
 

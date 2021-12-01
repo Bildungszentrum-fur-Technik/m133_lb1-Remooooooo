@@ -9,9 +9,10 @@ class MitarbeiterController extends Controller
         // Instanzierung des Model
         $SpesenModel  = $this->model('SpesenModel');
 
-        // Fake Data laden
-        // Validierung der Berechtigung im nächsten Schritt
-        $data = $SpesenModel->getFakeSpesenDataArray();
+        // Daten werden Geladen
+        // In einem späteren Schritt wird die UserID verwendet, im Moment ist der Parameter hardcoded.
+        $data = $SpesenModel->getSpesenUser(2);
+
 
         // View wird gerendert
         echo $this->twig->render('mitarbeiter/index.twig.html', ['title' => 'Spesen', 'urlroot' => URLROOT, 'data' => $data]);

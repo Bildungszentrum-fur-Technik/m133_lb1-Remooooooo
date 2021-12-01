@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Controller für das Spesenformular
+ */
 class SpesenController extends Controller
 {
     /**
@@ -60,6 +63,7 @@ class SpesenController extends Controller
                 'verkehrsmittel' => $verkehrsmittel,    // Form-Feld-Daten
                 'verkehrsmittel_err' => '',    // Feldermeldung für Attribute
                 'quittungen' => '',    // Form-Feld-Daten
+                'erstellen_err' => '' // Feldermeldung für Fehlermeldung beim erstellen
 
             ];
             // Überprüft das Pattern der Personalnummer, ob 6x eine Zahl von 0-9 vorkommt
@@ -79,10 +83,19 @@ class SpesenController extends Controller
             if (empty($data['reiseziel'])) {
                 $data['reiseziel_err'] = 'Bitte Reiseziel auswählen';
             }
+
+            // Essenskosten müssen zwischen 0 und 50 CHF
             if (empty($data['essenskosten'])) {
                 $data['essenskosten_err'] = 'Bitte Essenskosten angeben';
             } else if ($data['essenskosten'] < 0 or $data['essenskosten'] > 50) {
                 $data['essenskosten_err'] = 'Essenskosten müssen zwischen 0 und 50 Franken sein';
+            }
+
+            // Validierung ergänzt, darf kein negativer Wert sein
+            if (empty($data['uebernachtung'])) {
+                $data['uebernachtung_err'] = 'Bitte Uebernachtungskosten angeben';
+            } else if ($data['uebernachtung'] < 0) {
+                $data['uebernachtung_err'] = 'Uebernachtungskosten dürfen nicht unter 0 Franken liegen';
             }
 
             if (empty($data['verkehrsmittel'])) {
@@ -90,13 +103,20 @@ class SpesenController extends Controller
             }
 
             // Überprüfen ob Auto oder Zug ausgewählt ist und ob die Mussfelder ausgefüllt sind
+            // Validierung ergänzt, darf kein negativer Wert sein
             if ($data['verkehrsmittel'] == 'Auto') {
                 if (empty($data['kmanzahl'])) {
                     $data['kmanzahl_err'] = 'Bitte Kilometeranzahl angeben';
+                } else if ($data['kmanzahl'] < 0) {
+                    $data['kmanzahl_err'] = 'KM Anzahl darf nicht unter 0 KM liegen';
                 }
+
+                // Validierung ergänzt, darf kein negativer Wert sein
             } else if ($data['verkehrsmittel'] == 'Zug') {
                 if (empty($data['fahrtkosten'])) {
                     $data['fahrtkosten_err'] = 'Bitte Fahrtkosten angeben';
+                } else if ($data['fahrtkosten'] < 0) {
+                    $data['fahrtkosten_err'] = 'Fahrtkosten dürfen nicht unter 0 Franken liegen';
                 }
             } else {
                 $data['verkehrsmittel_err'] = 'Bitte Verkehrsmittel auswählen';
@@ -115,12 +135,26 @@ class SpesenController extends Controller
             // Keine Errors vorhanden
             if (
                 empty($data['personalnummer_err']) && empty($data['datum_err']) && empty($data['reiseziel_err'])
-                && empty($data['essenskosten_err']) && empty($data['verkehrsmittel_err']) && empty($data['fahrtkosten_err']) && empty($data['fahrtkosten_err']) && empty($data['kmanzahl_err'])
+                && empty($data['essenskosten_err']) && empty($data['verkehrsmittel_err']) && empty($data['fahrtkosten_err']) && empty($data['fahrtkosten_err']) && empty($data['kmanzahl_err']) && empty($data['uebernachtung_err'])
             ) {
                 // Alles gut, keine Fehler vorhanden
-                // Späteres TODO: Auf DB schreiben
-
-                $SpesenModel->fakewriteData($data);
+                // Falls Zug oder Ausgewählt wird, wird der andere Wert auf 0 gesetzt
+                if (empty($data['kmanzahl'])) {
+                    $data['kmanzahl'] = 0;
+                }
+                if (empty($data['fahrtkosten'])) {
+                    $data['fahrtkosten'] = 0;
+                }
+                // Fehlermeldung falls das Erstellen nicht funktiniert. UserID ist noch Hardcoded
+                $result = $SpesenModel->addSpesen($data, 2);
+                if (!$result) {
+                    $data['erstellen_err']  = 'Beim Erstellen ist ein Fehler aufgetreten.';
+                    echo $this->twig->render('spesen/index.twig.html', ['title' => 'Spesen Add', 'urlroot' => URLROOT, 'data' => $data]);
+                    // Ansonsten Redirect auf Homepage
+                } else {
+                    header("Location: /");
+                    echo "Redirect";
+                }
             } else {
                 // Fehler vorhanden - Fehler anzeigen
                 // View laden mit Fehlern

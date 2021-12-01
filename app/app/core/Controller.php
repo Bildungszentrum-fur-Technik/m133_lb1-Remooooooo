@@ -1,5 +1,10 @@
 <?php
 
+
+/**
+ * Übernommen von C.Inauen und als gut befunden
+ * Keine Änderungen vorgenommen
+ */
 class Controller
 {
     protected $twig;
