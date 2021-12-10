@@ -76,12 +76,27 @@ class SpesenController extends Controller
                 $data['personalnummer_err'] = 'Personalnummer ungültig';
             }
 
-            if (empty($data['datum'])) {
-                $data['datum_err'] = 'Bitte Datum angeben';
-            }
 
             if (empty($data['reiseziel'])) {
                 $data['reiseziel_err'] = 'Bitte Reiseziel auswählen';
+            }
+
+            // Pattern für den Regex, ob das Datum valide ist
+            $patterndate = "/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/";
+
+            if (empty($data['datum'])) {
+                $data['datum_err'] = 'Bitte Datum angeben';
+            }
+            // Überprüft, ob das Datum in einem zu langen Zeitraum zurück liegt oder in der Zukunft liegt.
+            elseif (strtotime($data['datum']) < strtotime('-6 month')) {
+                $data['datum_err'] = 'Bitte gültiges Datum eingeben';
+            } elseif (strtotime($data['datum']) > strtotime('+6 month')) {
+                $data['datum_err'] = 'Bitte gültiges Datum eingeben';
+            }
+
+            // Überprüft das Pattern des Datum 
+            elseif (preg_match($patterndate, $data['datum']) == 0) {
+                $data['datum_err'] = 'Datumsformat ungültig';
             }
 
             // Essenskosten müssen zwischen 0 und 50 CHF
