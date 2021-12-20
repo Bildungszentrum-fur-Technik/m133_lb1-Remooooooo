@@ -36,6 +36,7 @@ class Controller
 
 
         $this->twig = new Twig_Environment($loader, array('debug' => true));
+        $this->twig->addGlobal('session', $_SESSION);
         $this->twig->addExtension(new Twig_Extension_Debug());
 
         // Instantiate our Twig - Production, without Debugging

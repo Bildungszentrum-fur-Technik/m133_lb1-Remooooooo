@@ -12,7 +12,8 @@
     <thead class="thead-dark">
         <tr>
             <!-- TableHead -->
-            <th scope="col">ID</th>
+            <th scope="col">SpesenID</th>
+            <th scope="col">UserID</th>
             <th scope="col">Personalnummer</th>
             <th scope="col">Datum</th>
             <th scope="col">Reiseziel</th>
@@ -31,6 +32,7 @@
         {% for datarow in data %}
         <tr>
             <th scope="row">{{ datarow.ID }}</th>
+            <td>{{ datarow.UserID }}</td>
             <td>{{ datarow.Personalnummer }}</td>
             <td>{{ datarow.Datum }}</td>
             <td>{{ datarow.Reiseziel }}</td>

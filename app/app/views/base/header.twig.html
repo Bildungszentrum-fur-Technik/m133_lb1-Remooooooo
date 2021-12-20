@@ -20,6 +20,27 @@
         <li class="nav-item">
           <a class="nav-link" href="http://localhost:8000/VorgesetzterController">Vorgesetzter Übersicht</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Users/">User</a>
+        </li>
+ </ul>  
+ 
+        {% if not session.user_id is defined %}
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ urlroot }}/Users/register">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ urlroot }}/Users/login">Login</a>
+          </li>
+        </ul>
+        {% else %}
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ urlroot }}/Users/logout">Logout</a>
+            </li>
+        </ul>  
+        {% endif %}
 
       </ul>
       <!--    <form class="form-inline mt-2 mt-md-0">

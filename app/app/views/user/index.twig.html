@@ -1,0 +1,32 @@
+{% extends "base/layout.twig.html" %}
+
+{% block content %}
+
+<!-- Wir überschreiben den Content-Block -->
+<h1 class="mt-5">Benutzerliste: </h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Erstellt</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for row in data %}
+
+        <tr>
+            <th scope="row">{{ row.id }}</th>
+            <td>{{ row.name }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.created_at }}</td>
+        </tr>
+
+        {% endfor %}
+        
+    </tbody>
+</table>
+{% endblock %}
