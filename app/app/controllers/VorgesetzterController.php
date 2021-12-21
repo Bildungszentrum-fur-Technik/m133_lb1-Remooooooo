@@ -11,7 +11,7 @@ class VorgesetzterController extends Controller
     {
         // Dürfen wir überhaupt diese Funktion nutzen? 
         if (!isset($_SESSION['user_id'])) {
-            // Kein Login, Keine Bestellungen -> möglich wäre auch eine Weiterleitung auf Login
+            // Redirect home
             redirect('');
         } else {
 
@@ -34,7 +34,7 @@ class VorgesetzterController extends Controller
     {
         // Dürfen wir überhaupt diese Funktion nutzen? 
         if (!isset($_SESSION['user_id'])) {
-            // Kein Login, Keine Bestellungen -> möglich wäre auch eine Weiterleitung auf Login
+            // Redirect home
             redirect('');
         } else {
 

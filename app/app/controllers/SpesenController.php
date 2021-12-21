@@ -16,7 +16,7 @@ class SpesenController extends Controller
     {
         // Dürfen wir überhaupt diese Funktion nutzen? 
         if (!isset($_SESSION['user_id'])) {
-            // Kein Login, Keine Bestellungen -> möglich wäre auch eine Weiterleitung auf Login
+            // Kein Login -> Weiterleitung auf Login
             redirect('Users/login');
         } else {
 
@@ -166,7 +166,7 @@ class SpesenController extends Controller
                 if (empty($data['fahrtkosten'])) {
                     $data['fahrtkosten'] = 0;
                 }
-                // Fehlermeldung falls das Erstellen nicht funktiniert. UserID ist noch Hardcoded
+                // Fehlermeldung falls das Erstellen nicht funktiniert. 
                 $result = $SpesenModel->addSpesen($data, $_SESSION["user_id"]);
                 if (!$result) {
                     $data['erstellen_err']  = 'Beim Erstellen ist ein Fehler aufgetreten.';

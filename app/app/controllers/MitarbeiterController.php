@@ -8,7 +8,7 @@ class MitarbeiterController extends Controller
     {
         // Dürfen wir überhaupt diese Funktion nutzen? 
         if (!isset($_SESSION['user_id'])) {
-            // Kein Login, Keine Bestellungen -> möglich wäre auch eine Weiterleitung auf Login
+            // Kein Login -> Weiterleitung auf Login
             redirect('Users/login');
         } else {
 

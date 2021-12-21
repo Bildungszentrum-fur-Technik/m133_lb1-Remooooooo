@@ -1,5 +1,3 @@
--- Adminer 4.7.1 MySQL dump
-
 SET NAMES utf8;
 SET time_zone = '+00:00';
 
@@ -17,6 +15,3 @@ CREATE TABLE `users` (
   `roles` json NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
--- 2019-11-27 16:23:45
